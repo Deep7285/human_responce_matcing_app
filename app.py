@@ -6,9 +6,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 import io
 
 # --- PAGE SETUP ---
-st.set_page_config(page_title="Mentorship Matcher", layout="wide")
-st.title("🎯 Mentorship Matching Algorithm")
-st.markdown("Upload your Coachee and Mentor datasets to generate optimal, AI-driven matches.")
+st.set_page_config(page_title="Human pair matching", layout="wide")
+st.title(" Human pair Matching Algorithm")
+st.markdown("Upload your human responsce datasets for pair matching.")
 
 # --- SIDEBAR: WEIGHT ADJUSTMENTS ---
 st.sidebar.header("⚙️ Adjust Algorithm Weights")
