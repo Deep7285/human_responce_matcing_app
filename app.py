@@ -4,6 +4,7 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import io
+import pdfplumber
 
 # --- PAGE SETUP ---
 st.set_page_config(page_title="Human pair matching", layout="wide")
@@ -50,9 +51,9 @@ def get_group(text, mapping):
 # --- MAIN UI: FILE UPLOADS ---
 col1, col2 = st.columns(2)
 with col1:
-    coachee_file = st.file_uploader("Upload Coachee Data (CSV)", type=['csv'])
+    coachee_file = st.file_uploader("Upload Coachee Data", type=['csv', 'xlsx', 'pdf'])
 with col2:
-    mentor_file = st.file_uploader("Upload Mentor Data (CSV)", type=['csv'])
+    mentor_file = st.file_uploader("Upload Mentor Data", type=['csv', 'xlsx', 'pdf'])
 
 if coachee_file and mentor_file:
     if st.button("🚀 Run Matching Algorithm", type="primary"):
