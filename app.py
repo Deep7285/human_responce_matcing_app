@@ -88,11 +88,13 @@ w_deg = st.sidebar.slider(
     min_value=0.0, max_value=1.0, value=0.15, step=0.05,
     help=(
         "**Degree Persuing**\n\n"
-        "Compares the academic level of the coachee's current programme with the mentor's "
-        "highest qualification. Levels are grouped as:\n"
-        "B.Tech → Dual Degree → Masters/M.Tech → MBA → PhD.\n\n"
-        "A coachee is also considered a good match if their level is one step below the mentor's.\n\n"
-        "📌 *Increase this weight if educational background similarity matters most.*"
+        "Matechs the academic level of the coachee's current programme with the mentor's degree in IIT Madras or from other Institute:\n\n"
+        "1. The degree broadly grouped in Undergraduate, Dual Degree, Masters, MBA, PhD.\n\n"
+        "2. The Degree will be matched with similar degree if satisfies otherwise will look for other degree if other critatia matched. \n\n"
+        "3. All coachees who are currently pursuing an MBA will be paired with mentor coaches who either did their MBA from IIT Madras or have" 
+        "done an MBA from another Indian institute after graduating from IIT Madras.\n\n"
+        "4. All coachees who are currently pursuing a PhD degree will be paired with mentor coaches who have done a PhD either from IIT Madras or elsewhere.\n\n"
+        "📌 *Adjusrt the weight if acadamic background similarity as needed.*"
     )
 )
 
