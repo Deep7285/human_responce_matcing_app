@@ -6,7 +6,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import io
 import pdfplumber
 
-# ─── Page Setup ────────────────────────────────────────────────────────────────
+# Page Setup 
 st.set_page_config(
     page_title="Mentor–Coachee Pair Matching",
     page_icon="🤝",
@@ -14,14 +14,14 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ─── Custom CSS ────────────────────────────────────────────────────────────────
+# Custom CSS 
 st.markdown("""
 <style>
     .main-header {
         font-size: 2.2rem;
         font-weight: 700;
         color: #1a3a5c;
-        margin-bottom: 0.2rem;
+        margin-bottom: 0.1rem;
     }
     .sub-header {
         font-size: 1rem;
@@ -52,10 +52,12 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ─── Page Header ───────────────────────────────────────────────────────────────
+# Page Header 
 st.markdown('<div class="main-header">🤝 Mentor–Coachee Pair Matching</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-header">Upload mentor and coachee response datasets to generate optimal pairings.</div>', unsafe_allow_html=True)
-st.info("📋 **Note:** Coachee and mentor data must be prepared in **separate** files (CSV, Excel, or PDF).", icon="ℹ️")
+st.markdown('<div class="sub-header">Upload the mentor and coachee response datasheets to generate top 3 pairings.</div>', unsafe_allow_html=True)
+st.info(" The matching algorithm gives top 3 mentor options for each coachee based on a weighted combination of criteria including " \
+"specialisation, degree level, professional goals, personal interests, IIT experience, and background. Adjust the weights in the sidebar to prioritise certain criteria.\n\n"
+"📋 **Note:** Coachee and mentor data must be prepared in **separate** files (CSV, Excel, or PDF).")
 
 # ─── Sidebar: Weight Adjustment ────────────────────────────────────────────────
 st.sidebar.markdown("## ⚙️ Matching Criteria Weights")
@@ -68,15 +70,16 @@ st.sidebar.markdown(
 st.sidebar.markdown("### 🎓 Hard Skills")
 
 w_spec = st.sidebar.slider(
-    "Specialisation Weight",
+    "Area of Specialisation",
     min_value=0.0, max_value=1.0, value=0.25, step=0.05,
     help=(
         "**Specialisation Match**\n\n"
-        "Evaluates how closely the coachee's branch of study at IIT Madras aligns with "
-        "the mentor's area of professional specialisation.\n\n"
-        "Example: A coachee from Computer Science matched with a mentor specialising in "
-        "Software/CS earns a higher specialisation score.\n\n"
-        "📌 *Increase this weight if technical domain alignment is a priority.*"
+        "Evaluates how closely the coachee's branch of study at IIT Madras aligns with the mentor's area of professional specialisation.\n\n"
+        "1. The number of branches (areas of specialisation) at IIT Madras have increased over the years.\n\n"
+        "2. Applied mechanics was a part of mechanical engineering.\n\n" \
+        "3. Biotechnology, Biomedical engineering and Engineering Design, are relatively new areas.\n\n"
+        "4. Data science is an area of specialization for those doing dual degree programss.\n\n"
+        "📌 *Adjust the weight if technical domain alignment as needed.*"
     )
 )
 
@@ -84,7 +87,7 @@ w_deg = st.sidebar.slider(
     "Degree Weight",
     min_value=0.0, max_value=1.0, value=0.15, step=0.05,
     help=(
-        "**Degree Match**\n\n"
+        "**Degree Persuing**\n\n"
         "Compares the academic level of the coachee's current programme with the mentor's "
         "highest qualification. Levels are grouped as:\n"
         "B.Tech → Dual Degree → Masters/M.Tech → MBA → PhD.\n\n"
