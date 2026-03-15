@@ -59,15 +59,14 @@ st.info(" The matching algorithm gives top 3 mentor options for each coachee bas
 "specialisation, degree level, professional goals, personal interests, IIT experience, and background. Adjust the weights in the sidebar to prioritise certain criteria.\n\n"
 "📋 **Note:** Coachee and mentor data must be prepared in **separate** files (CSV, Excel, or PDF).")
 
-# ─── Sidebar: Weight Adjustment ────────────────────────────────────────────────
+# Sidebar: Match critatia Weight Adjustmentment
 st.sidebar.markdown("## ⚙️ Matching Criteria Weights")
 st.sidebar.markdown(
     '<p class="sidebar-note">Click the ❓ icon next to each slider to learn what that criterion measures.</p>',
     unsafe_allow_html=True,
 )
 
-# ── Hard Skills ────────────────────────────────────────────────────────────────
-st.sidebar.markdown("### 🎓 Hard Skills")
+# Hard Skills (Degree & Specialisation)
 
 w_spec = st.sidebar.slider(
     "Area of Specialisation",
@@ -98,8 +97,7 @@ w_deg = st.sidebar.slider(
     )
 )
 
-# ── Soft Skills ────────────────────────────────────────────────────────────────
-st.sidebar.markdown("### 💡 Soft Skills")
+# Soft Skills ( Professional goals, Personal interests, IIT experience, Background & Values)
 
 w_prof = st.sidebar.slider(
     "Professional Match",
@@ -153,8 +151,8 @@ w_back = st.sidebar.slider(
     )
 )
 
-# ── Bonuses ────────────────────────────────────────────────────────────────────
-st.sidebar.markdown("### 🎁 Bonus")
+# Gender Preference
+st.sidebar.markdown("### Gender Preference")
 
 bonus_female = st.sidebar.slider(
     "Female-to-Female Bonus",
