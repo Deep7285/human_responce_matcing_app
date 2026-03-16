@@ -134,10 +134,10 @@ w_iit = st.sidebar.slider(
 )
 
 w_back = st.sidebar.slider(
-    "Family Background & Inspirations Match",
+    "Family Background & Inspration Match",
     min_value=0.0, max_value=1.0, value=0.10, step=0.05,
     help=(
-        "**Family Background & Inspirations Match**\n\n"
+        "**Family Background & Inspration Match**\n\n"
         "1. Matches the coachee’s home-town and growing up years prior to IIT Madras and Role Models with the mentor's *Growing Up Years*.\n\n"
         "2. The information help in matching mentor-coach who has a similar ethnic or family background.\n\n"
         "📌 *Adjust the weight accordingly.*"
@@ -164,10 +164,10 @@ bonus_female = st.sidebar.slider(
 # Weight Summary 
 total_w = w_spec + w_deg + w_prof + w_pers + w_iit + w_back
 st.sidebar.markdown("---")
-st.sidebar.markdown("### 📊 Matching critaria Current Weight Summary")
+st.sidebar.markdown("### 📊 Current Weight Summary")
 
 weight_data = {
-    "Criterion": ["Area of Specialisation", "Degree", "Professional or Career", "Personal Fit", "IIT Experience", "Family Background & Inspirations", "Gender Preference"],
+    "Criterion": ["Specialisation", "Degree", "Professional", "Personal", "IIT Context", "Background"],
     "Weight":    [w_spec, w_deg, w_prof, w_pers, w_iit, w_back],
 }
 weight_df = pd.DataFrame(weight_data)
