@@ -69,10 +69,10 @@ st.sidebar.markdown(
 # Hard Skills (Degree & Specialisation)
 
 w_spec = st.sidebar.slider(
-    "Area of Specialization Match",
+    "Area of Specialisation Match",
     min_value=0.0, max_value=1.0, value=0.25, step=0.05,
     help=(
-        "**Area of Specialization Match**\n\n"
+        "**Area of Specialisation Match**\n\n"
         "Evaluates how closely the coachee's branch of study at IIT Madras aligns with the mentor's area of professional specialisation.\n\n"
         "1. The number of branches (areas of specialisation) at IIT Madras have increased over the years.\n\n"
         "2. Applied mechanics was a part of mechanical engineering.\n\n" \
@@ -162,7 +162,7 @@ bonus_female = st.sidebar.slider(
 )
 
 # Weight Summary 
-weighted_matrix = w_spec + w_deg + w_prof + w_pers + w_iit + w_back
+total_w = w_spec + w_deg + w_prof + w_pers + w_iit + w_back
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 📊 Matching critaria Current Weight Summary")
 
@@ -172,7 +172,7 @@ weight_data = {
 }
 weight_df = pd.DataFrame(weight_data)
 weight_df["Share (%)"] = (
-    (weight_df["Weight"] / weighted_matrix * 100).round(1) if weighted_matrix > 0 else 0
+    (weight_df["Weight"] / total_w * 100).round(1) if total_w > 0 else 0
 )
 st.sidebar.dataframe(
     weight_df.set_index("Criterion"),
@@ -180,13 +180,13 @@ st.sidebar.dataframe(
     height=235,
 )
 
-if abs(weighted_matrix - 1.0) > 0.01:
+if abs(total_w - 1.0) > 0.01:
     st.sidebar.warning(
-        f"⚠️ Weights sum to **{weighted_matrix:.2f}** (not 1.0). "
+        f"⚠️ Weights sum to **{total_w:.2f}** (not 1.0). "
         "Scores are still valid but consider normalising for best results."
     )
 else:
-    st.sidebar.success(f"✅ Weights sum to **{weighted_matrix:.2f}** — balanced!")
+    st.sidebar.success(f"✅ Weights sum to **{total_w:.2f}** — balanced!")
 
 # ─── Helper Functions ──────────────────────────────────────────────────────────
 def clean(text):
