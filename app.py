@@ -69,10 +69,10 @@ st.sidebar.markdown(
 # Hard Skills (Degree & Specialisation)
 
 w_spec = st.sidebar.slider(
-    "Area of Specialisation Match",
+    "Area of Specialization Match",
     min_value=0.0, max_value=1.0, value=0.25, step=0.05,
     help=(
-        "**Area of Specialisation Match**\n\n"
+        "**Area of Specialization Match**\n\n"
         "Evaluates how closely the coachee's branch of study at IIT Madras aligns with the mentor's area of professional specialisation.\n\n"
         "1. The number of branches (areas of specialisation) at IIT Madras have increased over the years.\n\n"
         "2. Applied mechanics was a part of mechanical engineering.\n\n" \
