@@ -384,10 +384,10 @@ if coachee_file and mentor_file:
                     if 'female' in c_gender and 'female' in clean(m_row.get('Gender', '')):
                         total += bonus_female
 
-                    # Format the details string exactly as requested, reusing the existing variables
+                    # include detailed breakdown in the details string for transparency
                     details_str = f"(Tot:{total:.2f}), (H:SP{int(sc_spec)}D{int(sc_deg)}), (S:Pr{s_prof[i]:.1f}, Pe{s_pers[i]:.1f}, IX{s_iit[i]:.1f}, FB{s_back[i]:.1f})"
 
-                    # Append using the same dictionary structure
+                    # Append to the scores list 
                     scores.append({'id': m_row['Mentor ID'], 'score': total, 'details': details_str})
 
                 scores.sort(key=lambda x: x['score'], reverse=True)
@@ -402,9 +402,11 @@ if coachee_file and mentor_file:
                     if k < len(top3):
                         row[f'Option {k+1} Mentor ID']  = top3[k]['id']
                         row[f'Option {k+1} Score (%)']  = round(top3[k]['score'] * 100, 1)
+                        row[f'Option {k+1} Details']    = top3[k]['details']
                     else:
                         row[f'Option {k+1} Mentor ID']  = "N/A"
                         row[f'Option {k+1} Score (%)']  = "—"
+                        row[f'Option {k+1} Details']    = "N/A"  
                 final_matches.append(row)
 
             res_df = pd.DataFrame(final_matches)
