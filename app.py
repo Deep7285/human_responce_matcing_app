@@ -384,7 +384,11 @@ if coachee_file and mentor_file:
                     if 'female' in c_gender and 'female' in clean(m_row.get('Gender', '')):
                         total += bonus_female
 
-                    scores.append({'id': m_row['Mentor ID'], 'score': total})
+                    # Format the details string exactly as requested, reusing the existing variables
+                    details_str = f"(Tot:{total:.2f}), (H:SP{int(sc_spec)}D{int(sc_deg)}), (S:Pr{s_prof[i]:.1f}, Pe{s_pers[i]:.1f}, IX{s_iit[i]:.1f}, FB{s_back[i]:.1f})"
+
+                    # Append using the same dictionary structure
+                    scores.append({'id': m_row['Mentor ID'], 'score': total, 'details': details_str})
 
                 scores.sort(key=lambda x: x['score'], reverse=True)
                 top3, seen = [], set()
