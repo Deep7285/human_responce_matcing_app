@@ -194,11 +194,11 @@ def clean(text):
 
 def get_degree_group(text):
     t = clean(text)
-    if any(x in t for x in ['b.tech', 'btech', 'undergraduate', 'bachelor']): return 1
-    if any(x in t for x in ['dual degree', 'bs-ms', 'iddd']):                 return 2
-    if any(x in t for x in ['masters', 'm.tech', 'msc']):                     return 3
-    if any(x in t for x in ['mba', 'emba']):                                  return 4
-    if any(x in t for x in ['phd', 'doctorate']):                             return 5
+    if any(x in t for x in ['b.tech', 'btech', 'b. tech', 'undergraduate', 'bachelor']): return 1
+    if any(x in t for x in ['dual degree', 'b.s - m.s', 'bs-ms', 'iddd']): return 2
+    if any(x in t for x in ['masters', 'm.tech', 'm. tech', 'm.s', 'msc']): return 3
+    if any(x in t for x in ['mba', 'emba']): return 4
+    if any(x in t for x in ['phd', 'doctorate']): return 5
     return 0
 
 c_branch_map = {
