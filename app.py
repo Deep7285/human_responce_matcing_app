@@ -309,7 +309,7 @@ if coachee_file and mentor_file:
         
         # Determine specific messages and file names
         is_advanced = "Advanced" in engine_choice
-        loading_msg = "🔄 Running Advanced Semantic Context based Analysis (this may take 30-60 seconds)" if is_advanced else "🔄 Running Standard Word Match Analysis..."
+        loading_msg = "🔄 Running Advanced Semantic Context based Analysis (this may take some time)..." if is_advanced else "🔄 Running Standard Word Match Analysis..."
         file_suffix = "Semantic_Advanced" if is_advanced else "TF-IDF_Standard"
         
         with st.spinner(loading_msg):
