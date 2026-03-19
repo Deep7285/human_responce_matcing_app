@@ -7,10 +7,10 @@ import io
 import pdfplumber
 from sentence_transformers import SentenceTransformer
 
-# Sentance model loader with caching to speed up subsequent runs
+# Load the trained sentence transformer model for advanced semantic matching.
 @st.cache_resource
 def load_embedding_model():
-    # Lightweight, highly accurate semantic model
+    # load the sentance transformer model from Hugging Face (this will be cached for faster subsequent runs)
     return SentenceTransformer('all-MiniLM-L6-v2')
 
 embedding_model = load_embedding_model()
@@ -347,9 +347,9 @@ if coachee_file and mentor_file:
 
             final_matches = []
 
-            # =====================================================================
-            # ENGINE A: STANDARD (TF-IDF + Static Weights + Greedy Selection)
-            # =====================================================================
+        
+            # Algorithm: Standerd word match (TF-IDF + cosine similarity + Normalization)
+
             if not is_advanced:
                 
                 # Fit TF-IDF Vectors
