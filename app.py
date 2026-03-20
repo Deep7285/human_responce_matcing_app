@@ -176,7 +176,7 @@ st.sidebar.markdown("---")
 st.sidebar.markdown("### 📊 Current Weight Summary")
 
 weight_data = {
-    "Criterion": ["Specialisation", "Degree", "Professional", "Personal", "IIT Context", "Background"],
+    "Criterion": ["Area of Specialisation", "Degree", "Professional fit", "Personal fit", "IIT Experience", "Family Background & Inspration"],
     "Weight":    [w_spec, w_deg, w_prof, w_pers, w_iit, w_back],
 }
 weight_df = pd.DataFrame(weight_data)
