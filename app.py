@@ -195,9 +195,9 @@ if abs(total_w - 1.0) > 0.01:
         "Scores are still valid but consider normalising for best results."
     )
 else:
-    st.sidebar.success(f"✅ Weights sum to **{total_w:.2f}** — balanced!")
+    st.sidebar.success(f"✅ Weights sum to **{total_w:.2f}** is balanced!")
 
-# ─── Helper Functions ──────────────────────────────────────────────────────────
+# Data loading and preprocessing functions
 def clean(text):
     return str(text).lower().strip() if pd.notnull(text) else ""
 
@@ -258,15 +258,15 @@ def load_data(file):
                     df.dropna(how='all', inplace=True)
                     return df
                 else:
-                    st.error(f"⚠️ Could not find a readable table in {file.name}.")
+                    st.error(f"⚠️ Could not find a readable table in {file.name}. The file must contain a clear tabular format for extraction.")
                     return None
     except Exception as e:
         st.error(f"Error reading {file.name}: {e}")
         return None
 
-# ─── File Upload Section ───────────────────────────────────────────────────────
+# File Upload Section
 st.markdown("---")
-st.markdown("### 📂 Upload Data Files")
+st.markdown("### 📂 Upload Data Files Here")
 
 col1, col2 = st.columns(2)
 with col1:
@@ -276,7 +276,7 @@ with col1:
         type=['csv', 'xlsx', 'pdf'],
         label_visibility="collapsed",
         key="coachee_upload",
-        help="Upload the file containing coachee survey responses. Supported: CSV, Excel (.xlsx), PDF.",
+        help="Upload the file containing coachee's responce. Supported files are CSV, Excel (.xlsx) and PDF.",
     )
     if coachee_file:
         st.success(f"✅ Loaded: `{coachee_file.name}`")
@@ -288,7 +288,7 @@ with col2:
         type=['csv', 'xlsx', 'pdf'],
         label_visibility="collapsed",
         key="mentor_upload",
-        help="Upload the file containing mentor survey responses. Supported: CSV, Excel (.xlsx), PDF.",
+        help="Upload the file containing mentor's responce. Supported files are CSV, Excel (.xlsx) and PDF.",
     )
     if mentor_file:
         st.success(f"✅ Loaded: `{mentor_file.name}`")
