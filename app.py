@@ -15,7 +15,7 @@ def load_embedding_model():
 
 embedding_model = load_embedding_model()
 
-# Page Setup 
+# Main Page Setup 
 st.set_page_config(
     page_title="Mentor–Coachee Pair Matching",
     page_icon="🤝",
@@ -62,8 +62,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Page Header 
-st.markdown('<div class="main-header">🤝 Mentor–Coachee Pair Matching</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-header">Upload the mentor and coachee response datasheets to generate top 3 pairings.</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header"> Mentor–Coachee Pair Matching</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-header">Upload the mentor and coachee response datasheets to generate top 3 pair match.</div>', unsafe_allow_html=True)
 st.info(" The matching algorithm gives top 3 mentor options for each coachee based on a weighted combination of criteria including " \
 "specialisation, degree level, professional goals, personal interests, IIT experience, and background. Adjust the weights in the sidebar to prioritise certain criteria.\n\n"
 "📋 **Note:** Coachee and mentor data must be prepared in **separate** files (CSV, Excel, or PDF).")
@@ -71,7 +71,7 @@ st.info(" The matching algorithm gives top 3 mentor options for each coachee bas
 # Sidebar: Match critatia Weight Adjustmentment
 st.sidebar.markdown("## ⚙️ Matching Criteria Weights")
 st.sidebar.markdown(
-    '<p class="sidebar-note">Click the ❓ icon next to each slider to learn what that criterion measures.</p>',
+    '<p class="sidebar-note">Click the ❓ icon next to each slider to Explain what that criterion include for matching.</p>',
     unsafe_allow_html=True,
 )
 
