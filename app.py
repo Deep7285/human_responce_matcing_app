@@ -1,3 +1,4 @@
+# import the necessary libraries
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -5,12 +6,12 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import io
 import pdfplumber
+# A sentance transformer model from Hugging Face, is good for semantic matching and context understanding.
 from sentence_transformers import SentenceTransformer
 
 # Load the trained sentence transformer model for advanced semantic matching.
 @st.cache_resource
 def load_embedding_model():
-    # load the sentance transformer model from Hugging Face (this will be cached for faster subsequent runs)
     return SentenceTransformer('all-MiniLM-L6-v2')
 
 embedding_model = load_embedding_model()
@@ -23,7 +24,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Custom CSS 
+# page styling using markdown and CSS for better visual appeal and user experience. 
 st.markdown("""
 <style>
     .main-header {
@@ -61,7 +62,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Page Header 
+# main page Page Header 
 st.markdown('<div class="main-header"> Mentor–Coachee Pair Matching</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header">Upload the mentor and coachee response datasheets to generate top 3 pair match.</div>', unsafe_allow_html=True)
 st.info(" The matching algorithm gives top 3 mentor options for each coachee based on a weighted combination of criteria including " \
@@ -497,7 +498,7 @@ if coachee_file and mentor_file:
             # Final Output Compilation in pandas DataFrame 
             res_df = pd.DataFrame(final_matches)
 
-        # ── Results UI ──────────────────────────────────────────────────────────
+        # Display results and download option 
         st.success(f"✅ Matching complete using the {engine_choice.split(' (')[0]} engine!")
         st.markdown('<div class="results-title">📋 Top Match Results</div>', unsafe_allow_html=True)
 
