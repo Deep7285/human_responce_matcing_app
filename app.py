@@ -320,7 +320,7 @@ if coachee_file and mentor_file:
             if coachee_df is None or mentor_df is None:
                 st.stop()
 
-            # ── Preprocess (Shared by both engines) ─────────────────────────
+            # data preprocessing and feature engineering for both coachee and mentor dataframes
             coachee_df['Batch'] = coachee_df['Map Code/Coachee mapping'].astype(str).apply(lambda x: x.split('-')[1] if '-' in x else '0')
             mentor_df['Batch']  = mentor_df['Mentor ID'].astype(str).apply(lambda x: x.split('-')[1] if '-' in x else '0')
 
@@ -402,9 +402,8 @@ if coachee_file and mentor_file:
                     final_matches.append(row)
 
 
-            # =====================================================================
-            # ENGINE B: ADVANCED (Semantic AI + Dynamic Weights + Global Capacity)
-            # =====================================================================
+           
+            # Algorithm: Advanced semantic (Sentence transformer + Dynamic Weights + Global Capacity Optimization)
             else:
                 # Encode Semantic Vectors globally
                 v_prof_c_all = embedding_model.encode(coachee_df['Txt_Prof'].tolist())
@@ -495,7 +494,7 @@ if coachee_file and mentor_file:
                             row[f'Option {k+1} Details']    = "N/A"
                     final_matches.append(row)
 
-            # ── Final Output Compilation ──────────────────────────────────────
+            # Final Output Compilation in pandas DataFrame 
             res_df = pd.DataFrame(final_matches)
 
         # ── Results UI ──────────────────────────────────────────────────────────
