@@ -1,4 +1,4 @@
-# import the necessary libraries
+# imprt the necessary libraries
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -6,12 +6,12 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import io
 import pdfplumber
-# A sentance transformer model from Hugging Face, is good for semantic matching and context understanding.
 from sentence_transformers import SentenceTransformer
 
 # Load the trained sentence transformer model for advanced semantic matching.
 @st.cache_resource
 def load_embedding_model():
+    # load the sentance transformer model from Hugging Face (this will be cached for faster subsequent runs)
     return SentenceTransformer('all-MiniLM-L6-v2')
 
 embedding_model = load_embedding_model()
@@ -24,7 +24,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# page styling using markdown and CSS for better visual appeal and user experience. 
+# Custom CSS 
 st.markdown("""
 <style>
     .main-header {
@@ -62,7 +62,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# main page Page Header 
+# Page Header 
 st.markdown('<div class="main-header"> Mentor–Coachee Pair Matching</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header">Upload the mentor and coachee response datasheets to generate top 3 pair match.</div>', unsafe_allow_html=True)
 st.info(" The matching algorithm gives top 3 mentor options for each coachee based on a weighted combination of criteria including " \
@@ -259,10 +259,10 @@ def load_data(file):
                     df.dropna(how='all', inplace=True)
                     return df
                 else:
-                    st.error(f"⚠️ Could not find a readable table in {file.name}. The file must contain a clear tabular format for extraction.")
+                    st.error(f"⚠️ Could not find a readable table in {file.name}. The file must contain a clear tabular format for data extraction.")
                     return None
     except Exception as e:
-        st.error(f"Error reading {file.name}: {e}")
+        st.error(f" Error/Problem found in {file.name}: {e}")
         return None
 
 # File Upload Section
@@ -498,13 +498,13 @@ if coachee_file and mentor_file:
             # Final Output Compilation in pandas DataFrame 
             res_df = pd.DataFrame(final_matches)
 
-        # Display results and download option 
-        st.success(f"✅ Matching complete using the {engine_choice.split(' (')[0]} engine!")
+        # Match Result Display and User Interaction 
+        st.success(f"✅ Match pair complete using the {engine_choice.split(' (')[0]} Algorithm")
         st.markdown('<div class="results-title">📋 Top Match Results</div>', unsafe_allow_html=True)
 
         m1, m2, m3 = st.columns(3)
-        m1.metric("Total Coachees Processed", len(res_df))
-        m2.metric("Total Mentors Available",  len(mentor_df))
+        m1.metric("Total coachee's data Processed:", len(res_df))
+        m2.metric("Total mentors martched:",  len(mentor_df))
         try:
             avg_score = pd.to_numeric(res_df['Option 1 Score (%)'].replace("—", np.nan), errors='coerce').mean()
             m3.metric("Avg Top-1 Match Score", f"{avg_score:.1f}%")
