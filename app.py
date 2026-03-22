@@ -506,20 +506,26 @@ if coachee_file and mentor_file:
         m1.metric("Total coachee's data Processed:", len(res_df))
         m2.metric("Total mentors martched:",  len(mentor_df))
         try:
-            avg_score = pd.to_numeric(res_df['Option 1 Score (%)'].replace("—", np.nan), errors='coerce').mean()
-            m3.metric("Avg Top-1 Match Score", f"{avg_score:.1f}%")
+            avg_score_opt1 = pd.to_numeric(res_df['Option 1 Score (%)'].replace("—", np.nan), errors='coerce').mean()
+            avg_score_opt2 = pd.to_numeric(res_df['Option 2 Score (%)'].replace("—", np.nan), errors='coerce').mean()
+            avg_score_opt3 = pd.to_numeric(res_df['Option 3 Score (%)'].replace("—", np.nan), errors='coerce').mean()
+            m3.metric("Option-1 Avg Match Score", f"{avg_score_opt1:.1f}%")
+            m3.metric("Option-2 Avg Match Score", f"{avg_score_opt2:.1f}%")
+            m3.metric("Option-3 Avg Match Score", f"{avg_score_opt3:.1f}%")
         except Exception:
-            m3.metric("Avg Top-1 Match Score", "—")
+            m3.metric("Option-1 Avg Match Score", "—")
+            m3.metric("Option-2 Avg Match Score", "—")
+            m3.metric("Option-3 Avg Match Score", "—")
 
-        st.markdown("#### Preview (first 10 rows)")
+        st.markdown("#### Preview The first 10 matche rows")
         st.dataframe(res_df.head(10), use_container_width=True, hide_index=True)
 
-        with st.expander("🔍 View All Results", expanded=False):
+        with st.expander("🔍 View All Matches", expanded=False):
             st.dataframe(res_df, use_container_width=True, hide_index=True)
 
         csv = res_df.to_csv(index=False).encode('utf-8')
         st.download_button(
-            label=f"📥 Download Full Results as CSV",
+            label=f"📥 Download the matched results",
             data=csv,
             file_name=f"Mentor_Coachee_Matches_{file_suffix}.csv",
             mime="text/csv",
