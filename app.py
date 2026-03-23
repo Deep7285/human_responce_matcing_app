@@ -502,20 +502,20 @@ if coachee_file and mentor_file:
         st.success(f"✅ Match pair complete using the {engine_choice.split(' (')[0]} Algorithm")
         st.markdown('<div class="results-title">📋 Top Match Results</div>', unsafe_allow_html=True)
 
-        m1, m2, m3 = st.columns(3)
-        m1.metric("Total coachee's data Processed:", len(res_df))
+        m1, m2, m3, m4, m5 = st.columns(3)
+        m1.metric("Total coachee Processed:", len(res_df))
         m2.metric("Total mentors martched:",  len(mentor_df))
         try:
             avg_score_opt1 = pd.to_numeric(res_df['Option 1 Score (%)'].replace("—", np.nan), errors='coerce').mean()
             avg_score_opt2 = pd.to_numeric(res_df['Option 2 Score (%)'].replace("—", np.nan), errors='coerce').mean()
             avg_score_opt3 = pd.to_numeric(res_df['Option 3 Score (%)'].replace("—", np.nan), errors='coerce').mean()
             m3.metric("Option-1 Avg Match Score", f"{avg_score_opt1:.1f}%")
-            m3.metric("Option-2 Avg Match Score", f"{avg_score_opt2:.1f}%")
-            m3.metric("Option-3 Avg Match Score", f"{avg_score_opt3:.1f}%")
+            m4.metric("Option-2 Avg Match Score", f"{avg_score_opt2:.1f}%")
+            m5.metric("Option-3 Avg Match Score", f"{avg_score_opt3:.1f}%")
         except Exception:
             m3.metric("Option-1 Avg Match Score", "—")
-            m3.metric("Option-2 Avg Match Score", "—")
-            m3.metric("Option-3 Avg Match Score", "—")
+            m4.metric("Option-2 Avg Match Score", "—")
+            m5.metric("Option-3 Avg Match Score", "—")
 
         st.markdown("#### Preview The first 10 matche rows")
         st.dataframe(res_df.head(10), use_container_width=True, hide_index=True)
@@ -542,7 +542,7 @@ else:
                 Upload both coachee and mentor datasheets to get started
             </div>
             <div style="font-size:0.9rem; margin-top:6px;">
-                Load your Coachee and Mentor datasets, select your matching pair technique, then click <strong>Run Matching Algorithm</strong>.
+                Load your Coachee and Mentor datasets, select your matching pair, then click <strong>Run Matching Algorithm</strong>.
             </div>
         </div>
         """,
