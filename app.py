@@ -517,7 +517,7 @@ if coachee_file and mentor_file:
             m4.metric("Option-2 Avg Match Score", "—")
             m5.metric("Option-3 Avg Match Score", "—")
 
-        st.markdown("#### Preview The first 10 matche rows")
+        st.markdown("#### Preview The first 10 matched rows")
         st.dataframe(res_df.head(10), use_container_width=True, hide_index=True)
 
         with st.expander("🔍 View All Matches", expanded=False):
