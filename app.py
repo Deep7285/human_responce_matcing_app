@@ -502,7 +502,7 @@ if coachee_file and mentor_file:
         st.success(f"✅ Match pair complete using the {engine_choice.split(' (')[0]} Algorithm")
         st.markdown('<div class="results-title">📋 Top Match Results</div>', unsafe_allow_html=True)
 
-        m1, m2, m3, m4, m5 = st.columns(3)
+        m1, m2, m3, m4, m5 = st.columns(5)
         m1.metric("Total coachee Processed:", len(res_df))
         m2.metric("Total mentors martched:",  len(mentor_df))
         try:
