@@ -440,19 +440,20 @@ if coachee_file and mentor_file:
                     final_matches.append(row)
 
 
-        
             # Algorithm: Advanced semantic (Sentence transformer + Dynamic Weights + Global Capacity Optimization)
             else:
-                # Encode Semantic Vectors globally
-                v_prof_c_all = embedding_model.encode(coachee_df['Txt_Prof'].tolist())
-                v_pers_c_all = embedding_model.encode(coachee_df['Txt_Pers'].tolist())
-                v_iit_c_all  = embedding_model.encode(coachee_df['Txt_IIT'].tolist())
-                v_back_c_all = embedding_model.encode(coachee_df['Txt_Back'].tolist())
+                v_prof_c  = embedding_model.encode(coachee_df['Txt_Prof'].tolist())
+                v_pers1_c = embedding_model.encode(coachee_df['Txt_Pers1'].tolist())
+                v_pers2_c = embedding_model.encode(coachee_df['Txt_Pers2'].tolist())
+                v_iit1_c  = embedding_model.encode(coachee_df['Txt_IIT1'].tolist())
+                v_iit2_c  = embedding_model.encode(coachee_df['Txt_IIT2'].tolist())
+                v_back1_c = embedding_model.encode(coachee_df['Txt_Back1'].tolist())
+                v_back2_c = embedding_model.encode(coachee_df['Txt_Back2'].tolist())
                 
-                v_prof_m_all = embedding_model.encode(mentor_df['Txt_Prof'].tolist())
-                v_pers_m_all = embedding_model.encode(mentor_df['Txt_Pers'].tolist())
-                v_iit_m_all  = embedding_model.encode(mentor_df['Txt_IIT'].tolist())
-                v_back_m_all = embedding_model.encode(mentor_df['Txt_Back'].tolist())
+                v_prof_m  = embedding_model.encode(mentor_df['Txt_Prof'].tolist())
+                v_pers_m  = embedding_model.encode(mentor_df['Txt_Pers'].tolist())
+                v_iit_m   = embedding_model.encode(mentor_df['Txt_IIT'].tolist())
+                v_back_m  = embedding_model.encode(mentor_df['Txt_Back'].tolist())
 
                 all_pairings = []
 
@@ -464,13 +465,13 @@ if coachee_file and mentor_file:
                     candidates = mentor_df[mentor_df['Batch'] == batch].copy()
                     if candidates.empty: continue
                     
-                    # Dynamic Weight Distribution
+                    # Dynamic Weighting Logic
                     soft_weights = {'Prof': w_prof, 'Pers': w_pers, 'IIT': w_iit, 'Back': w_back}
                     empty_keys = []
                     if len(c_row['Txt_Prof']) < 5: empty_keys.append('Prof')
-                    if len(c_row['Txt_Pers']) < 5: empty_keys.append('Pers')
-                    if len(c_row['Txt_IIT']) < 5:  empty_keys.append('IIT')
-                    if len(c_row['Txt_Back']) < 5: empty_keys.append('Back')
+                    if len(c_row['Txt_Pers1']) < 5 and len(c_row['Txt_Pers2']) < 5: empty_keys.append('Pers')
+                    if len(c_row['Txt_IIT1']) < 5 and len(c_row['Txt_IIT2']) < 5:  empty_keys.append('IIT')
+                    if len(c_row['Txt_Back1']) < 5 and len(c_row['Txt_Back2']) < 5: empty_keys.append('Back')
                     
                     missing_w_total = sum([soft_weights[k] for k in empty_keys])
                     for k in empty_keys: soft_weights[k] = 0.0
@@ -482,10 +483,18 @@ if coachee_file and mentor_file:
 
                     batch_m_indices = candidates.index.tolist()
                     
-                    s_prof = normalize(cosine_similarity([v_prof_c_all[idx]], v_prof_m_all[batch_m_indices]).flatten())
-                    s_pers = normalize(cosine_similarity([v_pers_c_all[idx]], v_pers_m_all[batch_m_indices]).flatten())
-                    s_iit  = normalize(cosine_similarity([v_iit_c_all[idx]],  v_iit_m_all[batch_m_indices]).flatten())
-                    s_back = normalize(cosine_similarity([v_back_c_all[idx]], v_back_m_all[batch_m_indices]).flatten())
+                    raw_prof  = cosine_similarity([v_prof_c[idx]], v_prof_m[batch_m_indices]).flatten()
+                    raw_pers1 = cosine_similarity([v_pers1_c[idx]], v_pers_m[batch_m_indices]).flatten()
+                    raw_pers2 = cosine_similarity([v_pers2_c[idx]], v_pers_m[batch_m_indices]).flatten()
+                    raw_iit1  = cosine_similarity([v_iit1_c[idx]], v_iit_m[batch_m_indices]).flatten()
+                    raw_iit2  = cosine_similarity([v_iit2_c[idx]], v_iit_m[batch_m_indices]).flatten()
+                    raw_back1 = cosine_similarity([v_back1_c[idx]], v_back_m[batch_m_indices]).flatten()
+                    raw_back2 = cosine_similarity([v_back2_c[idx]], v_back_m[batch_m_indices]).flatten()
+
+                    s_prof = normalize(raw_prof)
+                    s_pers = normalize((raw_pers1 + raw_pers2) / 2.0)
+                    s_iit  = normalize((raw_iit1 + raw_iit2) / 2.0)
+                    s_back = normalize((raw_back1 + raw_back2) / 2.0)
 
                     for i, (m_idx, m_row) in enumerate(candidates.iterrows()):
                         sc_spec = 1.0 if (c_row['Branch_Grp'] in spec_match_logic and m_row['Spec_Grp'] in spec_match_logic[c_row['Branch_Grp']]) else 0.0
@@ -496,9 +505,24 @@ if coachee_file and mentor_file:
                             
                         details_str = f"(Tot:{total:.2f}), (H:SP{int(sc_spec)}D{int(sc_deg)}), (S:Pr{s_prof[i]:.1f}, Pe{s_pers[i]:.1f}, IX{s_iit[i]:.1f}, FB{s_back[i]:.1f})"
                         
-                        all_pairings.append({'c_id': c_id, 'm_id': m_row['Mentor ID'], 'score': total, 'details': details_str})
+                        # --- GENERATE MATCHED COLUMNS STRING ---
+                        ch_cols, mc_cols = [], []
+                        if sc_spec > 0: ch_cols.append("Branch at IIT Madras"); mc_cols.append("Specialisation")
+                        if sc_deg > 0:  ch_cols.append("Program at IIT Madras"); mc_cols.append("Degree")
+                        if raw_prof[i] > 0.15:  ch_cols.append("Career plan"); mc_cols.append("Career snapshot")
+                        if raw_pers1[i] > 0.15: ch_cols.append("Top 3 interests"); mc_cols.append("Interests")
+                        if raw_pers2[i] > 0.15: ch_cols.append("Main passions"); mc_cols.append("Interests")
+                        if raw_iit1[i] > 0.15:  ch_cols.append("IIT trajectory"); mc_cols.append("IIT experience")
+                        if raw_iit2[i] > 0.15:  ch_cols.append("Career plan"); mc_cols.append("IIT experience")
+                        if raw_back1[i] > 0.15: ch_cols.append("Family info and schooling"); mc_cols.append("Growing up years")
+                        if raw_back2[i] > 0.15: ch_cols.append("Role Models"); mc_cols.append("Growing up years")
+                        
+                        ch_cols = list(dict.fromkeys(ch_cols))
+                        mc_cols = list(dict.fromkeys(mc_cols))
+                        desc_str = f"(CH: {', '.join(ch_cols)}), (MC: {', '.join(mc_cols)})" if ch_cols else "No significant column overlap"
+                        
+                        all_pairings.append({'c_id': c_id, 'm_id': m_row['Mentor ID'], 'score': total, 'details': details_str, 'desc': desc_str})
 
-                # Global Capacity Optimization
                 MAX_CAPACITY = 3
                 all_pairings.sort(key=lambda x: x['score'], reverse=True)
                 
@@ -517,7 +541,6 @@ if coachee_file and mentor_file:
                         if m_id not in [p['m_id'] for p in coachee_results[c_id]]:
                             coachee_results[c_id].append(pair)
                 
-                # Reformat for DataFrame export
                 for c_id, top3 in coachee_results.items():
                     if not top3: continue
                     row = {'Coachee Code': c_id}
@@ -526,11 +549,15 @@ if coachee_file and mentor_file:
                             row[f'Option {k+1} Mentor ID']  = top3[k]['m_id']
                             row[f'Option {k+1} Score (%)']  = round(top3[k]['score'] * 100, 1)
                             row[f'Option {k+1} Details']    = top3[k]['details']
+                            row[f'Option {k+1} Matched Columns'] = top3[k]['desc']
                         else:
                             row[f'Option {k+1} Mentor ID']  = "N/A"
                             row[f'Option {k+1} Score (%)']  = "—"
                             row[f'Option {k+1} Details']    = "N/A"
+                            row[f'Option {k+1} Matched Columns'] = "N/A"
                     final_matches.append(row)
+
+            res_df = pd.DataFrame(final_matches)
 
             # Final Output Compilation in pandas DataFrame 
             res_df = pd.DataFrame(final_matches)
