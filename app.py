@@ -514,8 +514,22 @@ if coachee_file and mentor_file:
                         sc_spec = 1.0 if (c_row['Branch_Grp'] in spec_match_logic and m_row['Spec_Grp'] in spec_match_logic[c_row['Branch_Grp']]) else 0.0
                         sc_deg = 1.0 if ((c_row['Deg_Grp'] == m_row['Deg_Grp'] and c_row['Deg_Grp'] != 0) or (c_row['Deg_Grp'] == 1 and m_row['Deg_Grp'] == 2) or (c_row['Deg_Grp'] == 2 and m_row['Deg_Grp'] == 1)) else 0.0
                         
-                        total = ((sc_spec * w_spec) + (sc_deg * w_deg) + (s_prof[i] * soft_weights['Prof']) + (s_pers[i] * soft_weights['Pers']) + (s_iit[i]  * soft_weights['IIT']) + (s_back[i] * soft_weights['Back']))
-                        if 'female' in c_gender and 'female' in clean(m_row.get('Gender', '')): total += bonus_female
+                        # 1. Split Hard and Soft Scores (Using Dynamic Weights)
+                        total_hard = (sc_spec * w_spec) + (sc_deg * w_deg)
+                        total_soft = (s_prof[i] * soft_weights['Prof']) + (s_pers[i] * soft_weights['Pers']) + (s_iit[i]  * soft_weights['IIT']) + (s_back[i] * soft_weights['Back'])
+                        
+                        # 2. HOLISTIC SYNERGY BONUS
+                        # Calculate the maximum possible soft score using the dynamically redistributed weights
+                        max_possible_soft = sum(soft_weights.values())
+                        
+                        # If their combined text scores achieve >85% of the total possible soft points
+                        if max_possible_soft > 0 and total_soft > (max_possible_soft * 0.85):
+                            total_soft += 0.20 # Grant a flat 20% boost to overcome rigid academic rules
+                            
+                        # 3. Final Calculation
+                        total = total_hard + total_soft
+                        if 'female' in c_gender and 'female' in clean(m_row.get('Gender', '')): 
+                            total += bonus_female
                             
                         details_str = f"(Tot:{total:.2f}), (H:SP{int(sc_spec)}D{int(sc_deg)}), (S:Pr{s_prof[i]:.1f}, Pe{s_pers[i]:.1f}, IX{s_iit[i]:.1f}, FB{s_back[i]:.1f})"
                         
